@@ -8,6 +8,9 @@ namespace Koriym\MaDci;
 
 final class RoleInjector
 {
+    /**
+     * @var AbstractContext
+     */
     private $context;
 
     public function __construct(AbstractContext $context)
@@ -16,7 +19,7 @@ final class RoleInjector
     }
 
     /**
-     * Return role-injected object
+     * Return role-injected proxy object
      */
     public function inject($data, array $rolesClass)
     {
@@ -24,8 +27,7 @@ final class RoleInjector
         foreach ($rolesClass as $role) {
             $roles[] = new $role($data, $this->context);
         }
-        $rolePlayer = new RolePlayer($data, $roles);
 
-        return $rolePlayer;
+        return new RolePlayer($data, $roles);
     }
 }

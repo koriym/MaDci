@@ -9,12 +9,19 @@ namespace Koriym\MaDci;
 final class RolePlayer
 {
     /**
+     * @var object
+     */
+    private $data;
+
+    /**
      * @var AbstractRole[]
      */
     private $roles = [];
 
-    private $data;
-
+    /**
+     * @param object $data  Data object
+     * @param array  $roles Role objects
+     */
     public function __construct($data, array $roles)
     {
         $this->data = $data;

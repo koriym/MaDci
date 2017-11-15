@@ -13,9 +13,8 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 
 $sourceAccount = new Account(20);
 $destinationAccount = new Account(30);
-$moneytransfer = new TransferMoneyContext($sourceAccount, $destinationAccount);
-/* @var $moneytransfer TransferMoneyContext */
-$moneytransfer(10);
-$moneytransfer(5);
+$moneyTransfer = new TransferMoneyContext($sourceAccount, $destinationAccount);
+$moneyTransfer(10);
+$moneyTransfer(5);
 var_dump($sourceAccount->getBalance());
 var_dump($destinationAccount->getBalance());
