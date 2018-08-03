@@ -20,9 +20,9 @@ final class SourceAccountRole extends AbstractRole
     public function transfer(int $amount)
     {
         $destinationAccount = $this->context->destinationAccount;
-        /* @var $destinationAccount DestinationAccountRole */
+        /* @var DestinationAccountRole $destinationAccount */
         $destinationAccount->deposit($amount);
-        /* @var $this Account */
+        /* @var Account $this */
         $this->decreaseBalance($amount);
     }
 }

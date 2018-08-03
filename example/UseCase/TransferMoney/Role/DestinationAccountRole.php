@@ -13,7 +13,7 @@ final class DestinationAccountRole extends AbstractRole
 {
     public function deposit(int $amount)
     {
-        /* @var $this Account */
+        /* @var Account $this */
         $this->increaseBalance($amount);
     }
 }
