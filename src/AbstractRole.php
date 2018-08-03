@@ -28,7 +28,7 @@ abstract class AbstractRole
         $this->context = $context;
     }
 
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments)
     {
         return call_user_func_array([$this->data, $name], $arguments);
     }

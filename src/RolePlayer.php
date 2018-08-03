@@ -31,7 +31,7 @@ final class RolePlayer
     /**
      * Invoke role method or original method
      */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments)
     {
         foreach ($this->roles as $role) {
             if (method_exists($role, $name)) {
@@ -45,12 +45,12 @@ final class RolePlayer
         throw new \BadMethodCallException($name);
     }
 
-    public function addRoles(array $roles)
+    public function addRoles(array $roles) : void
     {
         $this->roles += $roles;
     }
 
-    public function removeRoles()
+    public function removeRoles() : void
     {
         $this->roles = [];
     }
