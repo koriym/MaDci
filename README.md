@@ -17,6 +17,10 @@ composer install
 php example/run.php
 ```
 
+## Object Identity
+
+This library is made for testing purposes. It is NOT doing true DCI. It use a wrapper object (RolePlaer) to represent the Role. See more at [I found a library that claims to do DCI, how can I know that it does?](http://fulloo.info/doku.php?id=i_found_a_library_that_claims_to_do_dci_how_can_i_know_that_it_does) for details.
+
 ## Link
 
  * [DCI - Data Context Interaction](https://en.wikipedia.org/wiki/Data,_context_and_interaction)
