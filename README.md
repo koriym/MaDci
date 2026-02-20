@@ -1,6 +1,6 @@
 # Ma DCI
 
-[<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/RyoanJi-Dry_garden.jpg/640px-RyoanJi-Dry_garden.jpg">](http://folk.uio.no/trygver/assets/Context-Orientation-2017-05-14%20T%2017-31-19.mp4)
+[<img width="640" height="427" alt="Image" src="https://github.com/user-attachments/assets/ec7884ac-b378-45ad-a1a0-28ed2c63438d" />](http://folk.uio.no/trygver/assets/Context-Orientation-2017-05-14%20T%2017-31-19.mp4)
 
 > The Japanese have a small word - ma - for "that which
  is in between" - perhaps the nearest English equivalent is "interstitial".
