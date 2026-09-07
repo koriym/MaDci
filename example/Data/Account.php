@@ -1,9 +1,11 @@
 <?php
+
 /**
  * This file is part of the Koriym.MaDci package.
  *
  * @license http://opensource.org/licenses/MIT MIT
  */
+
 namespace Koriym\DciExample\Data;
 
 final class Account
@@ -18,17 +20,17 @@ final class Account
         $this->balance = $initialBalanace;
     }
 
-    public function getBalance() : int
+    public function getBalance(): int
     {
         return $this->balance;
     }
 
-    public function increaseBalance(int $amount) : void
+    public function increaseBalance(int $amount): void
     {
         $this->balance += $amount;
     }
 
-    public function decreaseBalance(int $amount) : void
+    public function decreaseBalance(int $amount): void
     {
         $this->balance -= $amount;
     }
