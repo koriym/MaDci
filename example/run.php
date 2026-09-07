@@ -6,6 +6,8 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
+declare(strict_types=1);
+
 namespace Koriym\DciExample;
 
 use Koriym\DciExample\Data\Account;
@@ -20,3 +22,4 @@ $moneyTransfer(10);
 $moneyTransfer(5);
 var_dump($sourceAccount->getBalance());
 var_dump($destinationAccount->getBalance());
+var_dump($moneyTransfer->sourceAccount === $sourceAccount);

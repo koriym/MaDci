@@ -6,33 +6,39 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
+declare(strict_types=1);
+
 namespace Koriym\MaDci;
 
 use Koriym\DciExample\Data\Account;
 use Koriym\DciExample\UseCase\TransferMoney\Role\DestinationAccountRole;
-use Koriym\DciExample\UseCase\TransferMoney\Role\SourceAccountRole;
-use Koriym\DciExample\UseCase\TransferMoneyContext;
+use Koriym\MaDci\Fake\FakeContext;
+use Koriym\MaDci\Fake\FakePlainData;
+use Koriym\MaDci\Fake\FakeRoleA;
 use PHPUnit\Framework\TestCase;
 
-class RoleInjectorTest extends TestCase
+final class RoleInjectorTest extends TestCase
 {
-    public function testRoleInjector()
+    public function testInjectReturnsTheObjectItWasGiven(): void
     {
-        $context = (new \ReflectionClass(TransferMoneyContext::class))->newInstanceWithoutConstructor();
-        /* @var $context TransferMoneyContext */
-        $injector = new RoleInjector($context);
-        $sourceData = new Account(20);
-        $sourceAccount = $injector->inject($sourceData, [SourceAccountRole::class]);
-        /* @var $sourceAccount RolePlayer */
-        $this->assertTrue($sourceAccount->isCallable('transfer'));
-        $destinationData = new Account(20);
-        $destinationAccount = $injector->inject($destinationData, [DestinationAccountRole::class]);
-        /* @var $sourceAccount RolePlayer */
-        $this->assertTrue($destinationAccount->isCallable('deposit'));
-        /* @var $destinationAccount DestinationAccountRole */
-        $destinationAccount->deposit(10);
-        /* @var $destinationAccount Account */
-        $balance = $destinationAccount->getBalance();
-        $this->assertSame(30, $balance);
+        $context = new FakeContext();
+        $account = new Account(20);
+        $injected = (new RoleInjector($context))->inject($account, [DestinationAccountRole::class]);
+        $this->assertSame($account, $injected);
+    }
+
+    public function testRoleMethodAnswersThroughTheOriginalReference(): void
+    {
+        $context = new FakeContext();
+        $account = new Account(20);
+        (new RoleInjector($context))->inject($account, [DestinationAccountRole::class]);
+        $account->deposit(10);
+        $this->assertSame(30, $account->getBalance());
+    }
+
+    public function testDataWithoutTheTraitIsRejected(): void
+    {
+        $this->expectException(NotRolePlayer::class);
+        (new RoleInjector(new FakeContext()))->inject(new FakePlainData(), [FakeRoleA::class]);
     }
 }

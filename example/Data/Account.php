@@ -6,18 +6,18 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
+declare(strict_types=1);
+
 namespace Koriym\DciExample\Data;
+
+use Koriym\MaDci\RolePlayer;
 
 final class Account
 {
-    /**
-     * @var int
-     */
-    private $balance = 0;
+    use RolePlayer;
 
-    public function __construct(int $initialBalanace)
+    public function __construct(private int $balance)
     {
-        $this->balance = $initialBalanace;
     }
 
     public function getBalance(): int

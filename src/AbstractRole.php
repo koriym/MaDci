@@ -6,32 +6,46 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
+declare(strict_types=1);
+
 namespace Koriym\MaDci;
 
+use WeakReference;
+
+/**
+ * @template TContext of AbstractContext
+ */
 abstract class AbstractRole
 {
     /**
-     * The underlying data object
+     * Weak, or a context could never be collected on PHP 8.2, where a WeakMap value that refers back to its key is kept alive
      *
-     * @var object
+     * @var WeakReference<TContext>
      */
-    public $data;
+    private readonly WeakReference $contextRef;
 
     /**
-     * The context to which this role belongs
-     *
-     * @var AbstractContext
+     * @param object   $data
+     * @param TContext $context
      */
-    protected $context;
-
-    public function __construct($data, AbstractContext $context)
+    public function __construct(protected object $data, AbstractContext $context)
     {
-        $this->data = $data;
-        $this->context = $context;
+        $this->contextRef = WeakReference::create($context);
     }
 
-    public function __call(string $name, array $arguments)
+    public function __call(string $name, array $arguments): mixed
     {
-        return call_user_func_array([$this->data, $name], $arguments);
+        return $this->data->{$name}(...$arguments);
+    }
+
+    /**
+     * @return TContext
+     */
+    protected function context(): AbstractContext
+    {
+        $context = $this->contextRef->get();
+        assert($context instanceof AbstractContext);
+
+        return $context;
     }
 }

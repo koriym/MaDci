@@ -6,6 +6,8 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
+declare(strict_types=1);
+
 namespace Koriym\DciExample\UseCase;
 
 use Koriym\DciExample\Data\Account;
@@ -16,15 +18,9 @@ use Koriym\MaDci\RoleInjector;
 
 final class TransferMoneyContext extends AbstractContext
 {
-    /**
-     * @var SourceAccountRole
-     */
-    public $sourceAccount;
+    public readonly Account $sourceAccount;
 
-    /**
-     * @var DestinationAccountRole
-     */
-    public $destinationAccount;
+    public readonly Account $destinationAccount;
 
     public function __construct(Account $sourceAccount, Account $destinationAccount)
     {
@@ -33,7 +29,7 @@ final class TransferMoneyContext extends AbstractContext
         $this->destinationAccount = $roleInjector->inject($destinationAccount, [DestinationAccountRole::class]);
     }
 
-    public function __invoke(int $amount)
+    public function __invoke(int $amount): void
     {
         $this->sourceAccount->transfer($amount);
     }

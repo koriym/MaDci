@@ -6,25 +6,24 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
+declare(strict_types=1);
+
 namespace Koriym\DciExample\UseCase\TransferMoney\Role;
 
 use Koriym\DciExample\Data\Account;
 use Koriym\DciExample\UseCase\TransferMoneyContext;
 use Koriym\MaDci\AbstractRole;
 
+/**
+ * @extends AbstractRole<TransferMoneyContext>
+ *
+ * @mixin Account
+ */
 final class SourceAccountRole extends AbstractRole
 {
-    /**
-     * @var TransferMoneyContext
-     */
-    protected $context;
-
-    public function transfer(int $amount)
+    public function transfer(int $amount): void
     {
-        $destinationAccount = $this->context->destinationAccount;
-        /* @var DestinationAccountRole $destinationAccount */
-        $destinationAccount->deposit($amount);
-        /* @var Account $this */
+        $this->context()->destinationAccount->deposit($amount);
         $this->decreaseBalance($amount);
     }
 }

@@ -6,30 +6,32 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
+declare(strict_types=1);
+
 namespace Koriym\MaDci;
 
 final class RoleInjector
 {
-    /**
-     * @var AbstractContext
-     */
-    private $context;
-
-    public function __construct(AbstractContext $context)
+    public function __construct(private readonly AbstractContext $context)
     {
-        $this->context = $context;
     }
 
     /**
-     * Return role-injected proxy object
+     * Bind roles to a Data object and return that same object
+     *
+     * @template T of object
+     *
+     * @param T                                $data
+     * @param list<class-string<AbstractRole>> $rolesClass
+     *
+     * @return T
      */
-    public function inject($data, array $rolesClass)
+    public function inject(object $data, array $rolesClass): object
     {
-        $roles = [];
-        foreach ($rolesClass as $role) {
-            $roles[] = new $role($data, $this->context);
+        foreach ($rolesClass as $roleClass) {
+            RoleRegistry::bind($data, new $roleClass($data, $this->context), $this->context);
         }
 
-        return new RolePlayer($data, $roles);
+        return $data;
     }
 }
