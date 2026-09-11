@@ -20,6 +20,23 @@ use PHPUnit\Framework\TestCase;
 
 final class RoleRegistryTest extends TestCase
 {
+    public function testThisInsideARoleMethodIsTheDataObject(): void
+    {
+        $context = new FakeContext();
+        $data = new FakeData();
+        (new RoleInjector($context))->inject($data, [FakeRoleA::class]);
+        $this->assertSame($data, $data->itself());
+    }
+
+    public function testRoleSeesTheDataObjectThroughItsPublicInterface(): void
+    {
+        $context = new FakeContext();
+        $data = new FakeData();
+        (new RoleInjector($context))->inject($data, [FakeRoleA::class]);
+        $this->expectException(RoleMethodNotFound::class);
+        $data->peek();
+    }
+
     public function testRoleReachesAnotherRoleOfTheSameObjectThroughThis(): void
     {
         $context = new FakeContext();

@@ -12,6 +12,7 @@ namespace Koriym\DciExample\UseCase\TransferMoney\Role;
 
 use Koriym\DciExample\Data\Account;
 use Koriym\DciExample\UseCase\TransferMoneyContext;
+use Koriym\MaDci\AbstractContext;
 use Koriym\MaDci\AbstractRole;
 
 /**
@@ -21,8 +22,12 @@ use Koriym\MaDci\AbstractRole;
  */
 final class DestinationAccountRole extends AbstractRole
 {
-    public function deposit(int $amount): void
+    protected function methods(AbstractContext $context): array
     {
-        $this->increaseBalance($amount);
+        return [
+            'deposit' => function (int $amount): void {
+                $this->increaseBalance($amount);
+            },
+        ];
     }
 }

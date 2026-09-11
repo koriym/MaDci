@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Koriym\MaDci;
 
-use WeakReference;
+use Closure;
 
 /**
  * @template TContext of AbstractContext
@@ -18,34 +18,22 @@ use WeakReference;
 abstract class AbstractRole
 {
     /**
-     * Weak, or a context could never be collected on PHP 8.2, where a WeakMap value that refers back to its key is kept alive
+     * @return array<string, Closure>
+     */
+    final public function playedBy(object $data, AbstractContext $context): array
+    {
+        return array_map(
+            static fn (Closure $method): Closure => Closure::bind($method, $data),
+            $this->methods($context),
+        );
+    }
+
+    /**
+     * Role methods by name, each a closure that runs with $this bound to the Data object
      *
-     * @var WeakReference<TContext>
-     */
-    private readonly WeakReference $contextRef;
-
-    /**
-     * @param object   $data
      * @param TContext $context
+     *
+     * @return array<string, Closure>
      */
-    public function __construct(protected object $data, AbstractContext $context)
-    {
-        $this->contextRef = WeakReference::create($context);
-    }
-
-    public function __call(string $name, array $arguments): mixed
-    {
-        return $this->data->{$name}(...$arguments);
-    }
-
-    /**
-     * @return TContext
-     */
-    protected function context(): AbstractContext
-    {
-        $context = $this->contextRef->get();
-        assert($context instanceof AbstractContext);
-
-        return $context;
-    }
+    abstract protected function methods(AbstractContext $context): array;
 }

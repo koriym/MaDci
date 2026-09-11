@@ -10,17 +10,18 @@ declare(strict_types=1);
 
 namespace Koriym\MaDci\Fake;
 
+use Koriym\MaDci\AbstractContext;
 use Koriym\MaDci\AbstractRole;
 
 final class FakeRoleA extends AbstractRole
 {
-    public function greet(): string
+    protected function methods(AbstractContext $context): array
     {
-        return 'A';
-    }
-
-    public function askB(): string
-    {
-        return $this->replyB();
+        return [
+            'greet' => fn (): string => 'A',
+            'askB' => fn (): string => $this->replyB(),
+            'itself' => fn (): object => $this,
+            'peek' => fn (): string => $this->secret(),
+        ];
     }
 }

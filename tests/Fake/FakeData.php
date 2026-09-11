@@ -25,4 +25,9 @@ final class FakeData
     {
         return $this->greet();
     }
+
+    private function secret(): string
+    {
+        return 'secret';
+    }
 }

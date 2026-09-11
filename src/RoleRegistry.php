@@ -38,7 +38,8 @@ final class RoleRegistry
         }
         $bound = self::byContext()[$context] ??= new SplObjectStorage();
         $roles = $bound[$data] ?? [];
-        foreach (self::methodsOf($role) as $method) {
+        self::$methods[$role::class] ??= array_keys($role->playedBy($data, $context));
+        foreach (self::$methods[$role::class] as $method) {
             self::assertFree($roles, $data, $method);
         }
         $bound[$data] = [...$roles, $role];
@@ -57,8 +58,8 @@ final class RoleRegistry
                 continue;
             }
             foreach (self::byContext()[$context][$data] ?? [] as $role) {
-                if (in_array($name, self::methodsOf($role), true)) {
-                    return $role->{$name}(...$arguments);
+                if (in_array($name, self::$methods[$role::class], true)) {
+                    return $role->playedBy($data, $context)[$name](...$arguments);
                 }
             }
         }
@@ -75,21 +76,10 @@ final class RoleRegistry
             throw new RoleMethodCollision($data::class . '::' . $method);
         }
         foreach ($roles as $bound) {
-            if (in_array($method, self::methodsOf($bound), true)) {
+            if (in_array($method, self::$methods[$bound::class], true)) {
                 throw new RoleMethodCollision($bound::class . '::' . $method);
             }
         }
-    }
-
-    /**
-     * @return list<string>
-     */
-    private static function methodsOf(AbstractRole $role): array
-    {
-        return self::$methods[$role::class] ??= array_values(array_filter(
-            array_diff(get_class_methods($role), get_class_methods(AbstractRole::class)),
-            static fn (string $method): bool => ! str_starts_with($method, '__'),
-        ));
     }
 
     private static function isRolePlayer(object $data): bool

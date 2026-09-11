@@ -10,12 +10,13 @@ declare(strict_types=1);
 
 namespace Koriym\MaDci\Fake;
 
+use Koriym\MaDci\AbstractContext;
 use Koriym\MaDci\AbstractRole;
 
 final class FakeRoleWithName extends AbstractRole
 {
-    public function name(): string
+    protected function methods(AbstractContext $context): array
     {
-        return 'role';
+        return ['name' => fn (): string => 'role'];
     }
 }

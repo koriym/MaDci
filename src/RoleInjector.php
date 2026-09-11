@@ -29,7 +29,7 @@ final class RoleInjector
     public function inject(object $data, array $rolesClass): object
     {
         foreach ($rolesClass as $roleClass) {
-            RoleRegistry::bind($data, new $roleClass($data, $this->context), $this->context);
+            RoleRegistry::bind($data, new $roleClass(), $this->context);
         }
 
         return $data;
